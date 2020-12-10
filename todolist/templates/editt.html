@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block title %}
+<title>Task edited</title>
+{% endblock title %} {% block content %}
+<div class="container">
+  <form method="POST" class="row">
+    {% csrf_token %}
+
+    <label class="col-lg-4"> update task </label>
+    <input
+      type="text"
+      class="form-control col-lg-6"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      placeholder="kindly update the task noe"
+      name="task"
+    />
+    <input type="hidden"  name="done"  value="{{ task.done }}"/>
+
+    <button type="submit" class="btn btn-primary col-lg-2">update Task</button>
+  </form>
+</div>
+{% endblock content %}

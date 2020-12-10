@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block title %}
+<title>stalin</title>
+{% endblock title %} {% block content %}
+<div class="container">
+  <br />
+
+  {% if messages %} {% for message in messages %}
+
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{ message }}
+
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  {% endfor %} {% endif %}
+  <form method="POST" class="row">
+    {% csrf_token %}
+
+    <label class="col-lg-4">your tasks for Todya? </label>
+    <input
+      type="text"
+      class="form-control col-lg-6"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      placeholder="new task"
+      name="task"
+    />
+
+    <button type="submit" class="btn btn-primary col-lg-2">Add Task</button>
+  </form>
+  <br />
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Task</th>
+        <th scope="col">Done</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in all_task %} {% if i.done %}
+      <tr class="table-success">
+        <th scope="row">{{ i.id }}|{{ i.task }}</th>
+        <td><a href="{% url 'pending_task' i.id %}"> mark this pending</a></td>
+        <td><a href="{% url 'edit_task' i.id %}">Edit</td>
+        <td><a href="{% url 'delete_task' i.id %}">Delete</td>
+      </tr>
+      {% else %}
+      <tr>
+        <th scope="row">  {{ i.id }} | {{ i.task }}</th>
+        <td><a href="{% url 'complete_task' i.id %}"> mark this complete</a></td>
+         
+        <td><a href="{% url 'edit_task' i.id %}">Edit</td>
+        <td><a href="{% url 'delete_task' i.id %}">Delete</td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+     
+        
+      </li>
+      <li class="page-item"><a class="page-link" href="?pg=1"><<</a></li>
+      {% if all_task.has_previous %}
+      <li class="page-item"><a class="page-link" href="?pg={{ all_task.previous_page_number }}">{{ all_task.previous_page_number }}</a></li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="?pg={{ all_task.number }} ">{{ all_task.number }}</a></li>
+      {% if all_task.has_next %}
+      <li class="page-item"><a class="page-link" href="?pg={{ all_task.next_page_number }} ">{{ all_task.next_page_number }}</a></li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="?pg= {{ all_task.paginator.num_pages }}">>></a></li>
+    </ul>
+  </nav>
+</div>
+{% endblock content %}
